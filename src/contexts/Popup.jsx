@@ -35,7 +35,7 @@ const PopupProvider = ({ children }) => {
             {
                 (popup || waitingPopup.length !== 0) &&
                 <div onMouseDown={hide} className={`${popupShow ? "visible pt-0 opacity-[1]" : "invisible pt-[150vh] opacity-[0]"} transition-[2s] fixed w-screen h-screen bg-gray-950/20 z-50 flex justify-center items-center left-0 top-0`}>
-                    {popup}
+                    <div onMouseDown={event => event.stopPropagation()}> {popup} </div>
                 </div>
             }
             {children}
