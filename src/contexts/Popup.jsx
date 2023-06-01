@@ -15,10 +15,10 @@ const PopupProvider = ({ children }) => {
     }
 
     useEffect(() => {
-        if (popup) setPopupShow(true)
+        if (popup !== null) setPopupShow(true)
     }, [popup])
 
-    const hide = () => {
+    const close = () => {
         setPopupShow(false)
 
         setTimeout(() => {
@@ -27,16 +27,18 @@ const PopupProvider = ({ children }) => {
                 setPopup(waitingPopup[0])
                 setWaitingPopup(waitingPopup.slice(1))
             }
-        }, 200);
+        }, 150);
     }
 
     return (
-        <popupContext.Provider value={{ add, hide }}>
+        <popupContext.Provider value={{ add, close }}>
             {
-                (popup || waitingPopup.length !== 0) &&
-                <div onMouseDown={hide} className={`${popupShow ? "visible pt-0 opacity-[1]" : "invisible pt-[150vh] opacity-[0]"} transition-[2s] fixed w-screen h-screen bg-gray-950/20 z-50 flex justify-center items-center left-0 top-0`}>
-                    <div onMouseDown={event => event.stopPropagation()}> {popup} </div>
-                </div>
+                (popup || waitingPopup.length !== 0)
+                    ?
+                    <div onMouseDown={close} className={`${popupShow ? "visible pt-0 opacity-[1]" : "invisible pt-[150vh] opacity-[0]"} transition-all fixed w-screen h-screen bg-gray-950/20 z-50 flex justify-center items-center left-0 top-0`}>
+                        <div onMouseDown={event => event.stopPropagation()}> {popup} </div>
+                    </div>
+                    : null
             }
             {children}
         </popupContext.Provider>
